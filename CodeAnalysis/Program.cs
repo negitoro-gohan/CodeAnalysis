@@ -21,6 +21,7 @@ namespace CaslaySample
                     string[] csFiles = GetCsFiles(directoryPath);
                     foreach (string csFile in csFiles)
                     {
+                        //Console.WriteLine("ファイル名:" + csFile);
                         SyntaxAnalyzer syntaxAnalysis = new SyntaxAnalyzer();
                         syntaxAnalysis.GetSelectClauseWithoutOrderClause(csFile);
                     }
