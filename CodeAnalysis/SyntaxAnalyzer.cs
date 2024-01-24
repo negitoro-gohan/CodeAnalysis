@@ -42,7 +42,7 @@ namespace CodeAnalysis
 
                     var argumentList = appendInvocation.ArgumentList;
 
-                    targetSql.Append(argumentList.ToString().Replace(@"(""""", "").Replace(@""""")", ""));
+                    targetSql.Append(RemoveNouseAppendChar(argumentList.ToString()));
 
                     if (argumentList.ToString().ToLower().Contains("select"))
                     {
@@ -79,6 +79,12 @@ namespace CodeAnalysis
                 }
             }
             return false;
+        }
+        static string RemoveNouseAppendChar(string input)
+        {
+            // Apepndに続く不要なかっことダブルクォーテーションを削除する
+            input = input.Substring(1, input.Length - 2).Trim();
+            return input.Substring(1, input.Length - 2);
         }
     }
 }
