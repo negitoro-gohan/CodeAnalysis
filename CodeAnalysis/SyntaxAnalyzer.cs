@@ -86,7 +86,7 @@ namespace CodeAnalysis
                 }
 
                 // Append メソッドリスト内に "select" が含まれ、かつ "order" が含まれない場合、該当箇所を出力する
-                if (selectFlag && orderFlag)
+                if (selectFlag && orderFlag && updateFlag && insertFlag && deleteFlag && fromdualFlag)
                 {
                     Console.WriteLine("ファイル名:" + filePath);
                     Console.WriteLine("該当メソッド名:" + methodName);
