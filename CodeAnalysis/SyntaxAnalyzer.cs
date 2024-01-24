@@ -32,11 +32,18 @@ namespace CodeAnalysis
                     .Where(IsAppendMethod);
 
                 // Append メソッドリスト内に "select" が含まれ、かつ "order" が含まれない場合があるかチェックする
-                bool selectflag;
-                bool orderflag;
-                selectflag = false;
-                orderflag = true;
+                bool selectFlag;
+                bool orderFlag;
+                bool updateFlag;
+                bool insertFlag;
+                bool deleteFlag;
+                selectFlag = false;
+                orderFlag = true;
+                updateFlag = true;
+                insertFlag = true;
+                deleteFlag = true;
                 StringBuilder targetSql = new StringBuilder();
+                int lineNumber = 0;
                 foreach (var appendInvocation in appendMethodInvocations)
                 {
 
@@ -44,19 +51,36 @@ namespace CodeAnalysis
 
                     targetSql.Append(RemoveNouseAppendChar(argumentList.ToString()));
 
+                    if (lineNumber == 0)
+                    {
+                        //該当箇所の行番号の取得
+                        lineNumber = tree.GetLineSpan(argumentList.Span).StartLinePosition.Line + 1;
+                    }
                     if (argumentList.ToString().ToLower().Contains("select"))
                     {
-                        selectflag = true;
+                        selectFlag = true;
                     }
                     if (argumentList.ToString().ToLower().Contains("order"))
                     {
-                        orderflag = false;
+                        orderFlag = false;
+                    }
+                    if (argumentList.ToString().ToLower().Contains("update"))
+                    {
+                        updateFlag = false;
+                    }
+                    if (argumentList.ToString().ToLower().Contains("insert"))
+                    {
+                        insertFlag = false;
+                    }
+                    if (argumentList.ToString().ToLower().Contains("delete"))
+                    {
+                        deleteFlag = false;
                     }
 
                 }
 
                 // Append メソッドリスト内に "select" が含まれ、かつ "order" が含まれない場合、該当箇所を出力する
-                if (selectflag && orderflag)
+                if (selectFlag && orderFlag)
                 {
                     Console.WriteLine("ファイル名:" + filePath);
                     Console.WriteLine("該当メソッド名:" + methodName);
