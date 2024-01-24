@@ -37,11 +37,13 @@ namespace CodeAnalysis
                 bool updateFlag;
                 bool insertFlag;
                 bool deleteFlag;
+                bool fromdualFlag;
                 selectFlag = false;
                 orderFlag = true;
                 updateFlag = true;
                 insertFlag = true;
                 deleteFlag = true;
+                fromdualFlag = true;
                 StringBuilder targetSql = new StringBuilder();
                 int lineNumber = 0;
                 foreach (var appendInvocation in appendMethodInvocations)
@@ -75,6 +77,10 @@ namespace CodeAnalysis
                     if (argumentList.ToString().ToLower().Contains("delete"))
                     {
                         deleteFlag = false;
+                    }
+                    if (argumentList.ToString().ToLower().Contains("from dual"))
+                    {
+                        fromdualFlag = false;
                     }
 
                 }
